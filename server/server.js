@@ -13,7 +13,24 @@ const app = express();
 const PORT = process.env.PORT || 5000
 
 connectDB();
-app.use(cors());
+
+const allowedOrigins = [
+    "http://localhost:5174",
+    "https://rbas-system.onrender.com",
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("CORS not allowed"));
+        }
+    },
+    credentials: true
+}));
+
+
 app.use(express.json());
 
 
