@@ -92,6 +92,17 @@ export const AuthProvider = ({ children }) => {
             return { success: false, message: error.response?.data?.message || 'Password change failed' };
         }
     };
+
+    const refreshUser = async () => {
+        if (!token) return;
+        try {
+            const response = await getCurrentUserApi();
+            setUser(response.data.user);
+        } catch (error) {
+            console.error('Failed to refresh user:', error);
+        }
+    };
+
     const value = {
         user,
         token,
@@ -101,6 +112,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         updateProfile,
         changePassword,
+        refreshUser,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

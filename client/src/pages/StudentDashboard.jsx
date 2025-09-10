@@ -5,12 +5,13 @@ import ProfileTab from '../components/student/ProfileTab';
 import CoursesTab from '../components/student/CoursesTab';
 import ChangePasswordTab from '../components/student/ChangePasswordTab';
 import { User, BookOpen, Lock } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const StudentDashboard = () => {
     const [activeTab, setActiveTab] = useState('profile');
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const { token } = useAuth();
     useEffect(() => {
         fetchCourses();
     }, []);
@@ -18,8 +19,11 @@ const StudentDashboard = () => {
     const fetchCourses = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('http://localhost:5000/api/courses');
-            setCourses(response.data.courses);
+            const response = await axios.get('http://localhost:5000/api/courses', {
+                headers: {
+                    Authorization: `Bearer ${token}`, // <-- add this
+                },
+            }); setCourses(response.data.courses);
         } catch (error) {
             console.error('Error fetching courses:', error);
         } finally {
@@ -55,8 +59,8 @@ const StudentDashboard = () => {
                             <button
                                 onClick={() => setActiveTab('profile')}
                                 className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'profile'
-                                        ? 'border-blue-400 text-blue-400'
-                                        : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
+                                    ? 'border-blue-400 text-blue-400'
+                                    : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
                                     } transition-colors`}
                             >
                                 <User className="w-4 h-4" />
@@ -66,8 +70,8 @@ const StudentDashboard = () => {
                             <button
                                 onClick={() => setActiveTab('courses')}
                                 className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'courses'
-                                        ? 'border-blue-400 text-blue-400'
-                                        : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
+                                    ? 'border-blue-400 text-blue-400'
+                                    : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
                                     } transition-colors`}
                             >
                                 <BookOpen className="w-4 h-4" />
@@ -77,8 +81,8 @@ const StudentDashboard = () => {
                             <button
                                 onClick={() => setActiveTab('password')}
                                 className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'password'
-                                        ? 'border-blue-400 text-blue-400'
-                                        : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
+                                    ? 'border-blue-400 text-blue-400'
+                                    : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
                                     } transition-colors`}
                             >
                                 <Lock className="w-4 h-4" />

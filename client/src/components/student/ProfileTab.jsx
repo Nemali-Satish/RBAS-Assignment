@@ -44,7 +44,7 @@ const ProfileTab = () => {
             <div className="flex items-center space-x-3 mb-6">
                 <User className="w-8 h-8 text-blue-400" />
                 <div>
-                    <h2 className="text-xl font-semibold">My Profile</h2>
+                    <h2 className="text-xl font-semibold ">My Profile</h2>
                     <p className="text-gray-400">Update your personal information</p>
                 </div>
             </div>
@@ -109,7 +109,7 @@ const ProfileTab = () => {
                         type="text"
                         id="course"
                         name="course"
-                        value={formData.course}
+                        value={user?.enrolledCourses?.map(ec => ec.courseId.title).join(', ') || 'No courses'}
                         disabled
                         className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-400"
                     />

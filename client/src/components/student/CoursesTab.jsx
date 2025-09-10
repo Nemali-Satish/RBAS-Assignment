@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Search, BookOpen, User, Clock, DollarSign, CheckCircle, XCircle } from 'lucide-react';
 
 const CoursesTab = ({ courses, onCoursesChange }) => {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterLevel, setFilterLevel] = useState('all');
   const [loading, setLoading] = useState(false);
@@ -34,12 +34,14 @@ const CoursesTab = ({ courses, onCoursesChange }) => {
       setMessage('');
 
       await axios.post(`http://localhost:5000/api/courses/${courseId}/enroll`);
+      await refreshUser();
       setMessage('Successfully enrolled in the course!');
       onCoursesChange();
     } catch (err) {
       setError(err.response?.data?.message || 'Enrollment failed');
     } finally {
       setLoading(false);
+
     }
   };
 
@@ -52,11 +54,13 @@ const CoursesTab = ({ courses, onCoursesChange }) => {
       setMessage('');
 
       await axios.post(`http://localhost:5000/api/courses/${courseId}/unenroll`);
+      await refreshUser();
       setMessage('Successfully unenrolled from the course!');
       onCoursesChange();
     } catch (err) {
       setError(err.response?.data?.message || 'Unenrollment failed');
     } finally {
+      await refreshUser();
       setLoading(false);
     }
   };
@@ -131,10 +135,10 @@ const CoursesTab = ({ courses, onCoursesChange }) => {
               <div className="flex items-center justify-between">
                 <span
                   className={`px-2 py-1 text-xs rounded-full ${course.level === 'Beginner'
-                      ? 'bg-green-900 text-green-400'
-                      : course.level === 'Intermediate'
-                        ? 'bg-yellow-900 text-yellow-400'
-                        : 'bg-red-900 text-red-400'
+                    ? 'bg-green-900 text-green-400'
+                    : course.level === 'Intermediate'
+                      ? 'bg-yellow-900 text-yellow-400'
+                      : 'bg-red-900 text-red-400'
                     }`}
                 >
                   {course.level}
