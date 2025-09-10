@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
 
     useEffect(() => {
-        setAuthToken(token);
+        setAuthToken(token || null);
     }, [token]);
 
     useEffect(() => {
@@ -45,13 +45,21 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             const response = await loginApi(email, password);
-            const { token: newToken, user: userData } = response.data;
+            const { token: newToken } = response.data;
+
             localStorage.setItem('token', newToken);
             setToken(newToken);
-            setUser(userData);
+
+            // Fetch current user immediately
+            const currentUser = await getCurrentUserApi();
+            setUser(currentUser.data.user);
+
             return { success: true };
         } catch (error) {
-            return { success: false, message: error.response?.data?.message || 'Login failed' };
+            return {
+                success: false,
+                message: error.response?.data?.message || 'Login failed'
+            };
         }
     };
 
@@ -72,6 +80,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('token');
         setToken(null);
         setUser(null);
+        setAuthToken(null);
     };
 
     const updateProfile = async (profileData) => {

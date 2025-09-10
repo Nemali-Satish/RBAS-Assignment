@@ -4,6 +4,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import StudentDashboard from './pages/StudentDashboard'
 import AdminDashboard from './pages/AdminDashboard'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const App = () => {
   return (
@@ -18,21 +19,22 @@ const App = () => {
           <Route
             path="/admin"
             element={
-
-              <AdminDashboard />
-
+              <ProtectedRoute requiredRole="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
             }
           />
-
 
           <Route
             path="/dashboard"
             element={
-              <StudentDashboard />
+              <ProtectedRoute requiredRole="student">
+                <StudentDashboard />
+              </ProtectedRoute>
             }
           />
 
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
 
         </Routes>
       </div>
