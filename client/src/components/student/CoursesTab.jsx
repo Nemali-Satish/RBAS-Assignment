@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { Search, BookOpen, User, Clock, DollarSign, CheckCircle, XCircle } from 'lucide-react';
 
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
+
 const CoursesTab = ({ courses, onCoursesChange }) => {
   const { user, refreshUser } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,7 +35,7 @@ const CoursesTab = ({ courses, onCoursesChange }) => {
       setError('');
       setMessage('');
 
-      await axios.post(`http://localhost:5000/api/courses/${courseId}/enroll`);
+      await axios.post(`${API_URL}/courses/${courseId}/enroll`);
       await refreshUser();
       setMessage('Successfully enrolled in the course!');
       onCoursesChange();
@@ -53,7 +55,7 @@ const CoursesTab = ({ courses, onCoursesChange }) => {
       setError('');
       setMessage('');
 
-      await axios.post(`http://localhost:5000/api/courses/${courseId}/unenroll`);
+      await axios.post(`${API_URL}/courses/${courseId}/unenroll`);
       await refreshUser();
       setMessage('Successfully unenrolled from the course!');
       onCoursesChange();

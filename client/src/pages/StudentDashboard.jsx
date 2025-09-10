@@ -7,6 +7,8 @@ import ChangePasswordTab from '../components/student/ChangePasswordTab';
 import { User, BookOpen, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
+
 const StudentDashboard = () => {
     const [activeTab, setActiveTab] = useState('profile');
     const [courses, setCourses] = useState([]);
@@ -19,9 +21,9 @@ const StudentDashboard = () => {
     const fetchCourses = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('http://localhost:5000/api/courses', {
+            const response = await axios.get(`${API_URL}/courses`, {
                 headers: {
-                    Authorization: `Bearer ${token}`, // <-- add this
+                    Authorization: `Bearer ${token}`,
                 },
             }); setCourses(response.data.courses);
         } catch (error) {

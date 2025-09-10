@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
+// console.log("API_URL:", API_URL);
 
 // Set token in axios headers
 export const setAuthToken = (token) => {

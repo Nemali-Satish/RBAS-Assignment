@@ -5,6 +5,9 @@ import StudentsTab from '../components/admin/StudentsTab';
 import CoursesTab from '../components/admin/CoursesTab';
 import { Users, BookOpen, BarChart3 } from 'lucide-react';
 
+
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
+
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('students');
     const [students, setStudents] = useState([]);
@@ -24,8 +27,8 @@ const AdminDashboard = () => {
         try {
             setLoading(true);
             const [studentsRes, coursesRes] = await Promise.all([
-                axios.get('http://localhost:5000/api/users/students'),
-                axios.get('http://localhost:5000/api/courses'),
+                axios.get(`${API_URL}/users/students`),
+                axios.get(`${API_URL}/courses`),
             ]);
 
             setStudents(studentsRes.data.students);

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Trash2, Edit, Search, Plus, X, Save } from 'lucide-react';
 
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
+
 const StudentsTab = ({ students, onStudentsChange }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingStudent, setEditingStudent] = useState(null);
@@ -29,7 +31,7 @@ const StudentsTab = ({ students, onStudentsChange }) => {
   const handleSaveEdit = async () => {
     try {
       setLoading(true);
-      await axios.put(`http://localhost:5000/api/users/students/${editingStudent}`, editForm);
+      await axios.put(`${API_URL}/users/students/${editingStudent}`, editForm);
       setEditingStudent(null);
       setEditForm({});
       onStudentsChange();
@@ -51,7 +53,7 @@ const StudentsTab = ({ students, onStudentsChange }) => {
 
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5000/api/users/students/${studentId}`);
+      await axios.delete(`${API_URL}/users/students/${studentId}`);
       onStudentsChange();
     } catch (error) {
       setError(error.response?.data?.message || 'Delete failed');

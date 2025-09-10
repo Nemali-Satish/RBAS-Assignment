@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Trash2, Edit, Plus, X, Save, Search } from 'lucide-react';
 
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
+
 const CoursesTab = ({ courses, onCoursesChange }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -40,7 +42,7 @@ const CoursesTab = ({ courses, onCoursesChange }) => {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.post('http://localhost:5000/api/courses', courseForm);
+      await axios.post(`${API_URL}/courses`, courseForm);
       setShowCreateForm(false);
       resetForm();
       onCoursesChange();
@@ -67,7 +69,7 @@ const CoursesTab = ({ courses, onCoursesChange }) => {
   const handleSaveEdit = async () => {
     try {
       setLoading(true);
-      await axios.put(`http://localhost:5000/api/courses/${editingCourse}`, courseForm);
+      await axios.put(`${API_URL}/courses/${editingCourse}`, courseForm);
       setEditingCourse(null);
       resetForm();
       onCoursesChange();
@@ -88,7 +90,7 @@ const CoursesTab = ({ courses, onCoursesChange }) => {
 
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5000/api/courses/${courseId}`);
+      await axios.delete(`${API_URL}/courses/${courseId}`);
       onCoursesChange();
     } catch (error) {
       setError(error.response?.data?.message || 'Course deletion failed');
@@ -290,10 +292,10 @@ const CoursesTab = ({ courses, onCoursesChange }) => {
                   <div className="flex justify-between items-center">
                     <span
                       className={`px-2 py-1 text-xs rounded-full ${course.level === 'Beginner'
-                          ? 'bg-green-800 text-green-100'
-                          : course.level === 'Intermediate'
-                            ? 'bg-yellow-800 text-yellow-100'
-                            : 'bg-red-800 text-red-100'
+                        ? 'bg-green-800 text-green-100'
+                        : course.level === 'Intermediate'
+                          ? 'bg-yellow-800 text-yellow-100'
+                          : 'bg-red-800 text-red-100'
                         }`}
                     >
                       {course.level}
