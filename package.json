@@ -1,0 +1,22 @@
+{
+  "name": "rbas-assignment",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "install-all": "cd server && npm install && cd ../client && npm install",
+    "start-backend": "cd server && npm run start",
+    "start-frontend": "cd client && npm start",
+    "start": "npm run install-all && npm run start-backend & npm run start-frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nemali-Satish/RBAS-Assignment.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nemali-Satish/RBAS-Assignment/issues"
+  },
+  "homepage": "https://github.com/Nemali-Satish/RBAS-Assignment#readme"
+}
