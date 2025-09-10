@@ -17,7 +17,7 @@ connectDB();
 const allowedOrigins = [
     "http://localhost:5174",
     "https://rbas-system.onrender.com",
-    "https://rbas-frontend.vercel.app/"
+    "https://rbas-frontend.vercel.app"
 ];
 
 app.use(cors({
