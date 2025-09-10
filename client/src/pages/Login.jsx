@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, AlertCircle } from 'lucide-react';
 
+import { useAuth } from '../context/AuthContext';
 const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
@@ -10,6 +11,15 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    const { user, login } = useAuth();
+    const location = useLocation();
+
+    const from = location.state?.from?.pathname || (user?.role === 'admin' ? '/admin' : '/dashboard');
+
+    if (user) {
+        return <Navigate to={from} replace />;
+    }
 
     const handleChange = (e) => {
         setFormData({
@@ -24,8 +34,11 @@ const Login = () => {
         setIsLoading(true);
         setError('');
 
-        // TODO: connect to login API / auth logic
+        const result = await login(formData.email, formData.password);
 
+        if (!result.success) {
+            setError(result.message);
+        }
         setIsLoading(false);
     };
 

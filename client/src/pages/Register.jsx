@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { Eye, EyeOff, UserPlus, AlertCircle } from 'lucide-react';
 
 const Register = () => {
@@ -15,6 +16,13 @@ const Register = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+
+
+    const { user, register } = useAuth();
+
+    if (user) {
+        return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />;
+    }
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -38,7 +46,13 @@ const Register = () => {
         }
 
         setIsLoading(true);
-        // TODO Backend Logic
+
+        const result = await register(formData.name, formData.email, formData.password, formData.role);
+
+        if (!result.success) {
+            setError(result.message);
+        }
+
         setIsLoading(false);
     };
 
